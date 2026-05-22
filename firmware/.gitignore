@@ -1,0 +1,9 @@
+# Real secrets — never commit
+secrets.h
+
+# Arduino / PlatformIO build artifacts
+.pio/
+build/
+*.elf
+*.bin
+*.map
