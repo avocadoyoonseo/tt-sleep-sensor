@@ -2,8 +2,6 @@
 
 Real-time bedroom sleep environment monitor. An ESP32 reads 5 environmental sensors every 60 seconds, computes a 0–100 sleep quality score, displays it on an OLED, and streams data to a React dashboard via ThingSpeak.
 
-![Demo](https://img.shields.io/badge/status-active-brightgreen) ![License](https://img.shields.io/badge/license-MIT-blue)
-
 ---
 
 ## Hardware
