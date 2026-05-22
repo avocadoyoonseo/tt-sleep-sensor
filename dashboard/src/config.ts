@@ -9,4 +9,4 @@ export const FEED_24H = 1440;
 export const REFRESH_INTERVAL_MS = 60_000;
 
 // GitHub repo URL shown in the footer.
-export const GITHUB_URL = 'https://github.com/your-team/tt-sleep-sensor';
+export const GITHUB_URL = 'https://github.com/avocadoyoonseo/tt-sleep-sensor';
