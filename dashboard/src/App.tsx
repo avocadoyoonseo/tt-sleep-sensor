@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import type { ChannelData } from './types'
-import { fetchChannelData, IS_DEMO } from './api'
+import { fetchChannelData, getToken, setToken, clearToken } from './api'
+import type { AuthUser } from './api'
 import { METRICS } from './metrics'
 import { REFRESH_INTERVAL_MS } from './config'
 import { Header } from './components/Header'
@@ -8,6 +9,8 @@ import { SleepScoreHero } from './components/SleepScoreHero'
 import { ScoreBreakdown } from './components/ScoreBreakdown'
 import { MetricCard } from './components/MetricCard'
 import { TimeSeriesChart } from './components/TimeSeriesChart'
+import { RecommendationsPanel } from './components/RecommendationsPanel'
+import { AuthModal } from './components/AuthModal'
 import { Footer } from './components/Footer'
 
 // Sensor metrics only (exclude the composite sleep score card from the grid).
@@ -49,27 +52,42 @@ function SectionHeading({ children }: { children: string }) {
 // ── Main App ──────────────────────────────────────────────────────────────────
 
 export function App() {
+  const [token, setTokenState] = useState<string | null>(() => getToken())
+  const [user, setUser] = useState<AuthUser | null>(null)
   const [data, setData] = useState<ChannelData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
+  function handleAuthSuccess(t: string, u: AuthUser) {
+    setToken(t)
+    setTokenState(t)
+    setUser(u)
+  }
+
+  function handleLogout() {
+    clearToken()
+    setTokenState(null)
+    setUser(null)
+    setData(null)
+  }
+
   const refresh = useCallback(async () => {
     setIsLoading(true)
     setError(null)
     try {
-      const result = await fetchChannelData()
+      const result = await fetchChannelData(token)
       setData(result)
     } catch (e) {
       setError(
         e instanceof Error
           ? `Could not load data: ${e.message}`
-          : 'Could not load data from ThingSpeak.',
+          : 'Could not load data.',
       )
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [token])
 
   useEffect(() => {
     void refresh()
@@ -78,6 +96,10 @@ export function App() {
       if (intervalRef.current) clearInterval(intervalRef.current)
     }
   }, [refresh])
+
+  if (!token) {
+    return <AuthModal onSuccess={handleAuthSuccess} />
+  }
 
   const latest = data?.latest ?? null
   // Sparkline = last hour (60 readings at 60 s cadence).
@@ -103,8 +125,10 @@ export function App() {
         <Header
           fetchedAt={data?.fetchedAt ?? null}
           isLoading={isLoading}
-          isDemo={IS_DEMO}
+          isDemo={false}
           onRefresh={() => void refresh()}
+          user={user}
+          onLogout={handleLogout}
         />
 
         <div className="px-4 pt-6 flex flex-col gap-7">
@@ -166,6 +190,12 @@ export function App() {
             ) : (
               <div className="rounded-2xl border border-lp-200 bg-lp-100 h-80 animate-pulse" />
             )}
+          </section>
+
+          {/* ── AI recommendations ── */}
+          <section className="flex flex-col gap-4">
+            <SectionHeading>AI Recommendations</SectionHeading>
+            <RecommendationsPanel token={token} />
           </section>
         </div>
 

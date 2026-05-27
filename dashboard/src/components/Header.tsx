@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import { REFRESH_INTERVAL_MS } from '../config'
+import type { AuthUser } from '../api'
 
 interface Props {
   fetchedAt: Date | null
   isLoading: boolean
   isDemo: boolean
   onRefresh: () => void
+  user?: AuthUser | null
+  onLogout?: () => void
 }
 
 function relativeTime(date: Date): string {
@@ -16,7 +19,7 @@ function relativeTime(date: Date): string {
   return `${mins} minute${mins === 1 ? '' : 's'} ago`
 }
 
-export function Header({ fetchedAt, isLoading, isDemo, onRefresh }: Props) {
+export function Header({ fetchedAt, isLoading, isDemo, onRefresh, user, onLogout }: Props) {
   const [, setTick] = useState(0)
 
   // Refresh the "X seconds ago" label every 5 s without hitting the API.
@@ -51,6 +54,10 @@ export function Header({ fetchedAt, isLoading, isDemo, onRefresh }: Props) {
       </div>
 
       <div className="flex items-center gap-3 text-sm text-lp-400">
+        {user && (
+          <span className="text-xs text-lp-500 font-medium hidden sm:inline">{user.name}</span>
+        )}
+
         {fetchedAt && (
           <span>Updated {relativeTime(fetchedAt)}</span>
         )}
@@ -81,6 +88,15 @@ export function Header({ fetchedAt, isLoading, isDemo, onRefresh }: Props) {
           </svg>
           <span>{isLoading ? 'Refreshing…' : 'Refresh'}</span>
         </button>
+
+        {onLogout && (
+          <button
+            onClick={onLogout}
+            className="px-3 py-1.5 rounded-full bg-white hover:bg-rose-50 border border-lp-200 hover:border-rose-200 text-lp-400 hover:text-rose-500 text-xs transition-colors"
+          >
+            Sign out
+          </button>
+        )}
       </div>
     </header>
   )

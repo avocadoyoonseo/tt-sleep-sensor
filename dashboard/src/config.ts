@@ -2,6 +2,10 @@
 export const THINGSPEAK_CHANNEL_ID: string =
   import.meta.env.VITE_THINGSPEAK_CHANNEL_ID ?? '0000000';
 
+// Backend API base URL (the Express server).
+export const API_BASE_URL: string =
+  import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3001';
+
 // Number of entries to fetch for the 24-hour time-series view (60s cadence).
 export const FEED_24H = 1440;
 
