@@ -3,7 +3,7 @@
 // Uses deterministic math (no Math.random) so the chart looks stable across reloads.
 
 import type { ChannelData, FeedEntry } from './types'
-import { METRICS } from './metrics'
+import { calculateSleepScore } from './metrics'
 
 // Smooth periodic noise: sum of low-frequency sine waves.
 function wave(t: number, period: number, amplitude: number, phase = 0): number {
@@ -55,13 +55,12 @@ function makeLux(hour: number, i: number): number {
 type SensorValues = { co2: number; tempF: number; humidity: number; noise: number; lux: number }
 
 function computeScore(s: SensorValues): number {
-  const sensorMetrics = METRICS.filter((m) => m.key !== 'score')
-  const subScores = sensorMetrics.map((m) => {
-    const key = m.key as keyof SensorValues
-    return m.scoreValue(s[key])
-  })
-  const avg = subScores.reduce((a, b) => a + b, 0) / subScores.length
-  return Math.round(avg)
+  return calculateSleepScore(
+    s.lux,
+    s.tempF,
+    s.co2,
+    s.humidity,
+  )
 }
 
 export function generateMockData(): ChannelData {

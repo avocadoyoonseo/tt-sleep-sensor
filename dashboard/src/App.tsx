@@ -105,10 +105,16 @@ export function App() {
   // Sparkline = last hour (60 readings at 60 s cadence).
   const sparklineEntries = data ? data.entries.slice(-60) : []
 
-  // Count how many sensors are currently in a non-red zone (score ≥ 50).
+ // Count how many sensors are currently within healthy ranges.
   const healthySensorCount = latest
-    ? SENSOR_METRICS.filter((m) => m.scoreValue(latest[m.key] as number) >= 50).length
-    : undefined
+  ? [
+      latest.co2 < 750,
+      latest.tempF >= 68 && latest.tempF <= 77,
+      latest.humidity >= 30 && latest.humidity <= 50,
+      latest.noise < 30,
+      latest.lux < 10,
+    ].filter(Boolean).length
+  : undefined
 
   // Format the RTC timestamp from the latest ThingSpeak entry.
   const lastReadingTime = latest

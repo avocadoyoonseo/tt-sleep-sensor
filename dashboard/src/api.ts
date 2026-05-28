@@ -1,6 +1,7 @@
 import type { ChannelData, FeedEntry } from './types'
 import { THINGSPEAK_CHANNEL_ID, FEED_24H, API_BASE_URL } from './config'
 import { generateMockData } from './mockData'
+import { calculateSleepScore } from './metrics'
 
 // If the channel ID is still the placeholder, serve generated demo data.
 export const IS_DEMO = THINGSPEAK_CHANNEL_ID === '0000000'
@@ -76,8 +77,14 @@ function parseThingSpeakEntry(raw: RawFeed): FeedEntry | null {
   const hum   = Number(raw.field3)
   const noise = Number(raw.field4)
   const lux   = Number(raw.field5)
-  const score = Number(raw.field6)
-  if ([co2, tempF, hum, noise, lux, score].some(isNaN)) return null
+  if ([co2, tempF, hum, noise, lux].some(isNaN)) return null
+
+  const score = calculateSleepScore(
+    lux,
+    tempF,
+    co2,
+    hum,
+  )
   return { timestamp: new Date(raw.created_at), co2, tempF, humidity: hum, noise, lux, score }
 }
 
@@ -96,6 +103,14 @@ interface BackendFeed {
 }
 
 function parseBackendEntry(raw: BackendFeed): FeedEntry {
+
+  const score = calculateSleepScore(
+    raw.lux,
+    raw.temp_f,
+    raw.co2,
+    raw.humidity,
+  )
+
   return {
     timestamp: new Date(raw.timestamp),
     co2: raw.co2,
@@ -103,7 +118,7 @@ function parseBackendEntry(raw: BackendFeed): FeedEntry {
     humidity: raw.humidity,
     noise: raw.noise,
     lux: raw.lux,
-    score: raw.score,
+    score,
   }
 }
 
