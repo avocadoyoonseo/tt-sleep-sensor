@@ -4,30 +4,23 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        sans: ['Fira Sans', 'system-ui', 'sans-serif'],
+        mono: ['Fira Code', 'monospace'],
+        display: ['Fira Code', 'monospace'],
       },
       colors: {
-        // Light-purple UI scale — page bg is the lightest swatch, text is darkest.
+        // OLED dark scale — lp-50 is deepest dark (page bg), lp-900 is brightest (headings).
         lp: {
-          50:  '#F5F0FF', // page background (lightest swatch)
-          100: '#EBE0FF', // card hover / skeleton
-          200: '#D4BEFF', // borders
-          300: '#BBA0F0', // muted elements
-          400: '#8B7FC0', // secondary text / axis ticks
-          500: '#6B48C8', // primary accent (swatch 4)
-          600: '#4B1FA0', // headings (swatch 5)
-          700: '#3B1580', // strong text
-          800: '#2D1060', // body text
-          900: '#1E0840', // darkest text
-        },
-        // Dark-purple scale kept for reference.
-        dp: {
-          950: '#0E0920',
-          900: '#130A28',
-          800: '#1C1240',
-          700: '#2A1B55',
-          600: '#3D2880',
+          50:  '#0F172A', // page background (deepest)
+          100: '#1E293B', // card surface
+          200: '#334155', // borders / dividers
+          300: '#64748B', // very muted text / helper
+          400: '#94A3B8', // secondary text / axis ticks
+          500: '#22C55E', // primary accent (green)
+          600: '#16A34A', // hover green
+          700: '#CBD5E1', // strong secondary text
+          800: '#E2E8F0', // body text
+          900: '#F8FAFC', // headings (brightest)
         },
       },
     },

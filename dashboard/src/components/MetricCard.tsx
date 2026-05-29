@@ -33,7 +33,7 @@ export function MetricCard({ config, current, sparklineData }: Props) {
   const chartData = sparklineData.map((e) => ({ v: e[config.key] as number }))
 
   return (
-    <div className={`flex flex-col gap-2.5 p-4 rounded-xl border ${border} bg-white min-w-0`}>
+    <div className={`flex flex-col gap-2.5 p-4 rounded-xl border ${border} bg-lp-100 min-w-0`}>
       {/* Label row */}
       <div className="flex items-center justify-between gap-1">
         <span className="text-xs font-medium text-lp-400 uppercase tracking-wider truncate">
@@ -87,11 +87,11 @@ export function MetricCard({ config, current, sparklineData }: Props) {
               />
               <RechartsTooltip
                 contentStyle={{
-                  background: '#FFFFFF',
-                  border: '1px solid #D4BEFF',
+                  background: '#1E293B',
+                  border: '1px solid #334155',
                   borderRadius: '6px',
                   fontSize: '11px',
-                  color: '#2D1060',
+                  color: '#E2E8F0',
                 }}
                 formatter={(v: number) => [`${fmt(v)} ${config.unit}`, config.label]}
                 labelFormatter={() => ''}

@@ -20,11 +20,11 @@ const SENSOR_METRICS = METRICS.filter((m) => m.key !== 'score')
 
 function SkeletonCard() {
   return (
-    <div className="rounded-xl border border-lp-200 bg-lp-100/60 p-4 animate-pulse h-40">
+    <div className="rounded-xl border border-lp-200 bg-lp-100 p-4 animate-pulse h-40">
       <div className="h-3 w-20 bg-lp-200 rounded mb-3" />
       <div className="h-7 w-24 bg-lp-200 rounded mb-3" />
-      <div className="h-2 w-32 bg-lp-100 rounded mb-2" />
-      <div className="h-10 w-full bg-lp-100 rounded" />
+      <div className="h-2 w-32 bg-lp-200/50 rounded mb-2" />
+      <div className="h-10 w-full bg-lp-200/50 rounded" />
     </div>
   )
 }
@@ -33,7 +33,7 @@ function SkeletonCard() {
 
 function ErrorBanner({ message }: { message: string }) {
   return (
-    <div className="px-4 py-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm">
+    <div className="px-4 py-3 rounded-xl bg-rose-900/30 border border-rose-700/50 text-rose-400 text-sm">
       {message}
     </div>
   )

@@ -225,24 +225,24 @@ export const COLOR_CLASSES: Record<
   }
 > = {
   green: {
-    text: 'text-emerald-700',
-    bg: 'bg-emerald-50',
-    border: 'border-emerald-200',
-    ring: 'ring-emerald-400',
+    text: 'text-emerald-400',
+    bg: 'bg-emerald-400/10',
+    border: 'border-emerald-500/40',
+    ring: 'ring-emerald-400/40',
   },
 
   yellow: {
-    text: 'text-amber-700',
-    bg: 'bg-amber-50',
-    border: 'border-amber-200',
-    ring: 'ring-amber-400',
+    text: 'text-amber-400',
+    bg: 'bg-amber-400/10',
+    border: 'border-amber-500/40',
+    ring: 'ring-amber-400/40',
   },
 
   red: {
-    text: 'text-rose-700',
-    bg: 'bg-rose-50',
-    border: 'border-rose-200',
-    ring: 'ring-rose-500',
+    text: 'text-rose-400',
+    bg: 'bg-rose-400/10',
+    border: 'border-rose-500/40',
+    ring: 'ring-rose-400/40',
   },
 }
 
@@ -258,6 +258,6 @@ export const CHART_COLORS: Record<
   tempF: '#fb923c',
   humidity: '#818cf8',
   noise: '#f472b6',
-  lux: '#b45309',
+  lux: '#fcd34d',
   score: '#a78bfa',
 }

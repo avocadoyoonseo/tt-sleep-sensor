@@ -26,7 +26,7 @@ export function Footer() {
         </div>
 
         <p className="text-lp-300">
-          Data streams every 60 s via ThingSpeak (free tier · 6 fields · public channel). OLED + cloud dashboard are supplemental — primary output is always the on-device display.
+          Data streams every 60 s via WiFi to the custom backend. OLED + web dashboard are supplemental — primary output is always the on-device display.
         </p>
       </div>
     </footer>

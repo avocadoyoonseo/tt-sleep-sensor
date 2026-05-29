@@ -5,12 +5,12 @@
 /* Smooth scrollbar for dark backgrounds */
 html {
   scroll-behavior: smooth;
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 body {
   margin: 0;
-  background-color: #F5F0FF;
+  background-color: #0F172A;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

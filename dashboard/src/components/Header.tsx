@@ -69,7 +69,7 @@ export function Header({ fetchedAt, isLoading, isDemo, onRefresh, user, onLogout
         <button
           onClick={onRefresh}
           disabled={isLoading}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white hover:bg-lp-100 border border-lp-200 text-lp-600 transition-colors disabled:opacity-50"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-lp-100 hover:bg-lp-200 border border-lp-200 text-lp-700 transition-colors disabled:opacity-50"
           aria-label="Refresh now"
         >
           {/* Spinner or static icon */}
@@ -92,7 +92,7 @@ export function Header({ fetchedAt, isLoading, isDemo, onRefresh, user, onLogout
         {onLogout && (
           <button
             onClick={onLogout}
-            className="px-3 py-1.5 rounded-full bg-white hover:bg-rose-50 border border-lp-200 hover:border-rose-200 text-lp-400 hover:text-rose-500 text-xs transition-colors"
+            className="px-3 py-1.5 rounded-full bg-lp-100 hover:bg-rose-900/30 border border-lp-200 hover:border-rose-700/50 text-lp-400 hover:text-rose-400 text-xs transition-colors"
           >
             Sign out
           </button>

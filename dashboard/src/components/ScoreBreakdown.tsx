@@ -10,7 +10,7 @@ const SUB_METRICS = METRICS.filter((m) => m.key !== 'score')
 
 export function ScoreBreakdown({ latest }: Props) {
   return (
-    <div className="flex flex-col gap-3 p-4 rounded-2xl border border-lp-200 bg-white">
+    <div className="flex flex-col gap-3 p-4 rounded-2xl border border-lp-200 bg-lp-100">
       <h2 className="text-xs font-semibold text-lp-500 uppercase tracking-widest">
         Score Breakdown · 20% each
       </h2>

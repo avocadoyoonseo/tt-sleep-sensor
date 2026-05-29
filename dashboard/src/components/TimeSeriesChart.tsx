@@ -71,7 +71,7 @@ export function TimeSeriesChart({ entries }: Props) {
   })
 
   return (
-    <div className="flex flex-col gap-4 p-4 rounded-2xl border border-lp-200 bg-white">
+    <div className="flex flex-col gap-4 p-4 rounded-2xl border border-lp-200 bg-lp-100">
       {/* Header row: title + window selector */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-sm font-semibold text-lp-700">
@@ -108,11 +108,11 @@ export function TimeSeriesChart({ entries }: Props) {
               className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border transition-all ${
                 on ? 'opacity-100 border-lp-300' : 'opacity-40 border-lp-200'
               }`}
-              style={{ color: on ? CHART_COLORS[key] : '#BBA0F0' }}
+              style={{ color: on ? CHART_COLORS[key] : '#475569' }}
             >
               <span
                 className="w-1.5 h-1.5 rounded-full inline-block"
-                style={{ background: on ? CHART_COLORS[key] : '#D4BEFF' }}
+                style={{ background: on ? CHART_COLORS[key] : '#334155' }}
               />
               {cfg.label}
             </button>
@@ -124,27 +124,27 @@ export function TimeSeriesChart({ entries }: Props) {
       <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 4, right: 8, bottom: 4, left: -10 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#EBE0FF" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
             <XAxis
               dataKey="t"
-              tick={{ fontSize: 10, fill: '#8B7FC0' }}
+              tick={{ fontSize: 10, fill: '#94A3B8' }}
               tickLine={false}
               axisLine={false}
               interval="preserveStartEnd"
             />
             <YAxis
-              tick={{ fontSize: 10, fill: '#8B7FC0' }}
+              tick={{ fontSize: 10, fill: '#94A3B8' }}
               tickLine={false}
               axisLine={false}
               width={36}
             />
             <RechartsTooltip
               contentStyle={{
-                background: '#FFFFFF',
-                border: '1px solid #D4BEFF',
+                background: '#1E293B',
+                border: '1px solid #334155',
                 borderRadius: '8px',
                 fontSize: '12px',
-                color: '#2D1060',
+                color: '#E2E8F0',
               }}
             />
             {/* Healthy-zone reference lines (dashed, subtle) */}
@@ -175,7 +175,7 @@ export function TimeSeriesChart({ entries }: Props) {
       </div>
 
       <p className="text-[10px] text-lp-300">
-        Dashed lines mark healthy-zone thresholds. Data from SCD41 (CO₂/temp/humidity), BH1750 (light), INMP441 I²S mic (noise). 60-second cadence via ThingSpeak.
+        Dashed lines mark healthy-zone thresholds. Data from SCD41 (CO₂/temp/humidity), BH1750 (light), INMP441 I²S mic (noise). 60-second cadence.
       </p>
     </div>
   )
