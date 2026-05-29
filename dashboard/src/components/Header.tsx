@@ -40,10 +40,15 @@ export function Header({ fetchedAt, isLoading, isDemo, onRefresh, user, onLogout
   return (
     <header className="w-full px-4 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-lp-200">
       <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-2">
-          <h1 className="text-xl font-bold tracking-tight text-lp-800">
-            Sleep Sensor
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <h1 className="font-mono text-xl font-bold tracking-tight text-lp-900">
+            Dormi
           </h1>
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-lp-500/30 bg-lp-500/10 text-lp-500 text-[11px] font-semibold tracking-wide shrink-0">
+            <span className="font-mono">&#920;&#932;</span>
+            <span className="text-lp-400">·</span>
+            <span>Upsilon Delta</span>
+          </span>
           {isDemo && (
             <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30 uppercase tracking-wider">
               Demo Data

@@ -45,16 +45,23 @@ export function AuthModal({ onSuccess }: Props) {
       <div className="w-full max-w-sm">
         {/* Brand */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-2 mb-3">
+          <div className="flex items-center justify-center gap-2.5 mb-3">
             <span
-              className="w-2 h-2 rounded-full bg-lp-500 animate-pulse"
+              className="w-2 h-2 rounded-full bg-lp-500 animate-pulse shrink-0"
               style={{ boxShadow: '0 0 8px #22C55E' }}
             />
-            <h1 className="font-mono text-2xl font-bold text-lp-900 tracking-tight">
-              sleep_sensor
+            <h1 className="font-mono text-3xl font-bold text-lp-900 tracking-tight">
+              Dormi
             </h1>
           </div>
-          <p className="text-sm text-lp-400 font-mono">// live bedside monitor</p>
+          <div className="flex items-center justify-center gap-1.5 mb-1">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-lp-500/30 bg-lp-500/10 text-lp-500 text-xs font-semibold tracking-wide">
+              <span className="font-mono">&#920;&#932;</span>
+              <span className="text-lp-400">·</span>
+              <span>Upsilon Delta</span>
+            </span>
+          </div>
+          <p className="text-sm text-lp-400 font-mono mt-1">// live bedside monitor</p>
         </div>
 
         <div
