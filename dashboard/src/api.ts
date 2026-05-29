@@ -1,42 +1,49 @@
-import type { ChannelData, FeedEntry } from './types'
-import { THINGSPEAK_CHANNEL_ID, FEED_24H, API_BASE_URL } from './config'
-import { generateMockData } from './mockData'
-import { calculateSleepScore } from './metrics'
+import type { ChannelData, FeedEntry } from "./types";
+import { THINGSPEAK_CHANNEL_ID, FEED_24H, API_BASE_URL } from "./config";
+import { generateMockData } from "./mockData";
+import { calculateSleepScore } from "./metrics";
 
 // If the channel ID is still the placeholder, serve generated demo data.
-export const IS_DEMO = THINGSPEAK_CHANNEL_ID === '0000000'
+export const IS_DEMO = THINGSPEAK_CHANNEL_ID === "0000000";
 
 // ── Token storage ─────────────────────────────────────────────────────────────
 
 export function getToken(): string | null {
-  return localStorage.getItem('tt_token')
+  return localStorage.getItem("tt_token");
 }
 
 export function setToken(token: string): void {
-  localStorage.setItem('tt_token', token)
+  localStorage.setItem("tt_token", token);
 }
 
 export function clearToken(): void {
-  localStorage.removeItem('tt_token')
+  localStorage.removeItem("tt_token");
 }
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
 
 export interface AuthUser {
-  id: number
-  email: string
-  name: string
+  id: number;
+  email: string;
+  name: string;
 }
 
-export async function login(email: string, password: string): Promise<{ token: string; user: AuthUser }> {
+export async function login(
+  email: string,
+  password: string,
+): Promise<{ token: string; user: AuthUser }> {
   const res = await fetch(`${API_BASE_URL}/auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
-  })
-  const data = await res.json() as { token?: string; user?: AuthUser; error?: string }
-  if (!res.ok) throw new Error(data.error ?? 'Login failed')
-  return { token: data.token!, user: data.user! }
+  });
+  const data = (await res.json()) as {
+    token?: string;
+    user?: AuthUser;
+    error?: string;
+  };
+  if (!res.ok) throw new Error(data.error ?? "Login failed");
+  return { token: data.token!, user: data.user! };
 }
 
 export async function register(
@@ -45,71 +52,72 @@ export async function register(
   password: string,
 ): Promise<{ token: string; user: AuthUser }> {
   const res = await fetch(`${API_BASE_URL}/auth/register`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, name, password }),
-  })
-  const data = await res.json() as { token?: string; user?: AuthUser; error?: string }
-  if (!res.ok) throw new Error(data.error ?? 'Registration failed')
-  return { token: data.token!, user: data.user! }
+  });
+  const data = (await res.json()) as {
+    token?: string;
+    user?: AuthUser;
+    error?: string;
+  };
+  if (!res.ok) throw new Error(data.error ?? "Registration failed");
+  return { token: data.token!, user: data.user! };
 }
 
 // ── Data fetch (ThingSpeak raw format for backwards compat) ───────────────────
 
 interface RawFeed {
-  created_at: string
-  entry_id: number
-  field1: string | null
-  field2: string | null
-  field3: string | null
-  field4: string | null
-  field5: string | null
-  field6: string | null
+  created_at: string;
+  entry_id: number;
+  field1: string | null;
+  field2: string | null;
+  field3: string | null;
+  field4: string | null;
+  field5: string | null;
+  field6: string | null;
 }
 
 interface ThingSpeakResponse {
-  feeds: RawFeed[]
+  feeds: RawFeed[];
 }
 
 function parseThingSpeakEntry(raw: RawFeed): FeedEntry | null {
-  const co2   = Number(raw.field1)
-  const tempF = Number(raw.field2)
-  const hum   = Number(raw.field3)
-  const noise = Number(raw.field4)
-  const lux   = Number(raw.field5)
-  if ([co2, tempF, hum, noise, lux].some(isNaN)) return null
+  const co2 = Number(raw.field1);
+  const tempF = Number(raw.field2);
+  const hum = Number(raw.field3);
+  const noise = Number(raw.field4);
+  const lux = Number(raw.field5);
+  if ([co2, tempF, hum, noise, lux].some(isNaN)) return null;
 
-  const score = calculateSleepScore(
-    lux,
-    tempF,
+  const score = calculateSleepScore(lux, tempF, co2, hum);
+  return {
+    timestamp: new Date(raw.created_at),
     co2,
-    hum,
-  )
-  return { timestamp: new Date(raw.created_at), co2, tempF, humidity: hum, noise, lux, score }
+    tempF,
+    humidity: hum,
+    noise,
+    lux,
+    score,
+  };
 }
 
 // ── Backend feed format ───────────────────────────────────────────────────────
 
 interface BackendFeed {
-  id: number
-  user_id: number
-  timestamp: string
-  co2: number
-  temp_f: number
-  humidity: number
-  noise: number
-  lux: number
-  score: number
+  id: number;
+  user_id: number;
+  timestamp: string;
+  co2: number;
+  temp_f: number;
+  humidity: number;
+  noise: number;
+  lux: number;
+  score: number;
 }
 
 function parseBackendEntry(raw: BackendFeed): FeedEntry {
-
-  const score = calculateSleepScore(
-    raw.lux,
-    raw.temp_f,
-    raw.co2,
-    raw.humidity,
-  )
+  const score = calculateSleepScore(raw.lux, raw.temp_f, raw.co2, raw.humidity);
 
   return {
     timestamp: new Date(raw.timestamp),
@@ -119,34 +127,38 @@ function parseBackendEntry(raw: BackendFeed): FeedEntry {
     noise: raw.noise,
     lux: raw.lux,
     score,
-  }
+  };
 }
 
 // ── Main fetch — uses backend if token present, else ThingSpeak / demo ────────
 
-export async function fetchChannelData(token?: string | null): Promise<ChannelData> {
+export async function fetchChannelData(
+  token?: string | null,
+): Promise<ChannelData> {
   if (token) {
     const res = await fetch(`${API_BASE_URL}/data/feed?results=${FEED_24H}`, {
       headers: { Authorization: `Bearer ${token}` },
-    })
+    });
     if (res.status === 401) {
-      clearToken()
-      throw new Error('Session expired — please log in again')
+      clearToken();
+      throw new Error("Session expired — please log in again");
     }
-    if (!res.ok) throw new Error(`Backend responded ${res.status}`)
-    const data = await res.json() as { feeds: BackendFeed[] }
-    const entries = data.feeds.map(parseBackendEntry)
-    return { entries, latest: entries.at(-1) ?? null, fetchedAt: new Date() }
+    if (!res.ok) throw new Error(`Backend responded ${res.status}`);
+    const data = (await res.json()) as { feeds: BackendFeed[] };
+    const entries = data.feeds.map(parseBackendEntry);
+    return { entries, latest: entries.at(-1) ?? null, fetchedAt: new Date() };
   }
 
-  if (IS_DEMO) return generateMockData()
+  if (IS_DEMO) return generateMockData();
 
-  const url = `https://api.thingspeak.com/channels/${THINGSPEAK_CHANNEL_ID}/feeds.json?results=${FEED_24H}`
-  const res = await fetch(url)
-  if (!res.ok) throw new Error(`ThingSpeak responded ${res.status}`)
-  const data: ThingSpeakResponse = await res.json()
-  const entries = data.feeds.map(parseThingSpeakEntry).filter((e): e is FeedEntry => e !== null)
-  return { entries, latest: entries.at(-1) ?? null, fetchedAt: new Date() }
+  const url = `https://api.thingspeak.com/channels/${THINGSPEAK_CHANNEL_ID}/feeds.json?results=${FEED_24H}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`ThingSpeak responded ${res.status}`);
+  const data: ThingSpeakResponse = await res.json();
+  const entries = data.feeds
+    .map(parseThingSpeakEntry)
+    .filter((e): e is FeedEntry => e !== null);
+  return { entries, latest: entries.at(-1) ?? null, fetchedAt: new Date() };
 }
 
 // ── AI Recommendations ────────────────────────────────────────────────────────
@@ -154,8 +166,11 @@ export async function fetchChannelData(token?: string | null): Promise<ChannelDa
 export async function fetchRecommendation(token: string): Promise<string> {
   const res = await fetch(`${API_BASE_URL}/recommendations`, {
     headers: { Authorization: `Bearer ${token}` },
-  })
-  const data = await res.json() as { recommendation?: string; error?: string }
-  if (!res.ok) throw new Error(data.error ?? 'Failed to fetch recommendation')
-  return data.recommendation ?? 'No recommendation available.'
+  });
+  const data = (await res.json()) as {
+    recommendation?: string;
+    error?: string;
+  };
+  if (!res.ok) throw new Error(data.error ?? "Failed to fetch recommendation");
+  return data.recommendation ?? "No recommendation available.";
 }
