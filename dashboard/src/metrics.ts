@@ -225,24 +225,24 @@ export const COLOR_CLASSES: Record<
   }
 > = {
   green: {
-    text: 'text-emerald-400',
-    bg: 'bg-emerald-400/10',
-    border: 'border-emerald-500/40',
-    ring: 'ring-emerald-400/40',
+    text: 'text-emerald-700',
+    bg: 'bg-emerald-50',
+    border: 'border-emerald-200',
+    ring: 'ring-emerald-300',
   },
 
   yellow: {
-    text: 'text-amber-400',
-    bg: 'bg-amber-400/10',
-    border: 'border-amber-500/40',
-    ring: 'ring-amber-400/40',
+    text: 'text-amber-700',
+    bg: 'bg-amber-50',
+    border: 'border-amber-200',
+    ring: 'ring-amber-300',
   },
 
   red: {
-    text: 'text-rose-400',
-    bg: 'bg-rose-400/10',
-    border: 'border-rose-500/40',
-    ring: 'ring-rose-400/40',
+    text: 'text-rose-700',
+    bg: 'bg-rose-50',
+    border: 'border-rose-200',
+    ring: 'ring-rose-300',
   },
 }
 
@@ -254,10 +254,10 @@ export const CHART_COLORS: Record<
   MetricConfig['key'],
   string
 > = {
-  co2: '#c084fc',
-  tempF: '#fb923c',
-  humidity: '#818cf8',
-  noise: '#f472b6',
-  lux: '#fcd34d',
-  score: '#a78bfa',
+  co2: '#4F46E5',
+  tempF: '#C2410C',
+  humidity: '#0369A1',
+  noise: '#BE185D',
+  lux: '#B45309',
+  score: '#A16207',
 }

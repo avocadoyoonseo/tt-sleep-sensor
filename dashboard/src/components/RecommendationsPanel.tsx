@@ -62,7 +62,7 @@ export function RecommendationsPanel({ token }: Props) {
       </div>
 
       {error && (
-        <p className="text-xs text-rose-400 bg-rose-900/20 border border-rose-700/40 rounded-lg px-3 py-2">
+        <p className="text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2">
           {error}
         </p>
       )}
@@ -75,10 +75,10 @@ export function RecommendationsPanel({ token }: Props) {
 
       {isLoading && (
         <div className="flex flex-col gap-2 py-2">
-          <div className="h-3 bg-lp-100 rounded animate-pulse w-full" />
-          <div className="h-3 bg-lp-100 rounded animate-pulse w-5/6" />
-          <div className="h-3 bg-lp-100 rounded animate-pulse w-4/5" />
-          <div className="h-3 bg-lp-100 rounded animate-pulse w-full" />
+          <div className="h-3 bg-lp-200 rounded animate-pulse w-full" />
+          <div className="h-3 bg-lp-200 rounded animate-pulse w-5/6" />
+          <div className="h-3 bg-lp-200 rounded animate-pulse w-4/5" />
+          <div className="h-3 bg-lp-200 rounded animate-pulse w-full" />
         </div>
       )}
 

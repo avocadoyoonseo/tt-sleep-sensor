@@ -37,7 +37,7 @@ export function SleepScoreHero({ score, healthySensorCount }: Props) {
           <path
             d="M 8 60 A 52 52 0 0 1 112 60"
             fill="none"
-            stroke="#334155"
+            stroke="#E7E5E4"
             strokeWidth="10"
             strokeLinecap="round"
           />
@@ -56,10 +56,7 @@ export function SleepScoreHero({ score, healthySensorCount }: Props) {
 
         {/* Score number overlaid at the bottom center */}
         <div className="absolute inset-x-0 bottom-0 flex justify-center">
-          <span
-            className={`font-mono text-4xl font-bold ${text}`}
-            style={{ textShadow: '0 0 20px currentColor' }}
-          >
+          <span className={`font-mono text-4xl font-bold ${text}`}>
             {Math.round(score)}
           </span>
         </div>

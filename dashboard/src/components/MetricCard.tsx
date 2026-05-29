@@ -87,11 +87,11 @@ export function MetricCard({ config, current, sparklineData }: Props) {
               />
               <RechartsTooltip
                 contentStyle={{
-                  background: '#1E293B',
-                  border: '1px solid #334155',
+                  background: '#FFFFFF',
+                  border: '1px solid #E7E5E4',
                   borderRadius: '6px',
                   fontSize: '11px',
-                  color: '#E2E8F0',
+                  color: '#1C1917',
                 }}
                 formatter={(v: number) => [`${fmt(v)} ${config.unit}`, config.label]}
                 labelFormatter={() => ''}

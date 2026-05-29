@@ -4,23 +4,23 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Fira Sans', 'system-ui', 'sans-serif'],
-        mono: ['Fira Code', 'monospace'],
-        display: ['Fira Code', 'monospace'],
+        sans: ['Montserrat', 'system-ui', 'sans-serif'],
+        mono: ['DM Mono', 'monospace'],
+        display: ['Cormorant', 'serif'],
       },
       colors: {
-        // OLED dark scale — lp-50 is deepest dark (page bg), lp-900 is brightest (headings).
+        // Luxury Minimal — warm cream bg, white cards, gold accent.
         lp: {
-          50:  '#0F172A', // page background (deepest)
-          100: '#1E293B', // card surface
-          200: '#334155', // borders / dividers
-          300: '#64748B', // very muted text / helper
-          400: '#94A3B8', // secondary text / axis ticks
-          500: '#22C55E', // primary accent (green)
-          600: '#16A34A', // hover green
-          700: '#CBD5E1', // strong secondary text
-          800: '#E2E8F0', // body text
-          900: '#F8FAFC', // headings (brightest)
+          50:  '#FAFAF9', // page background (warm stone cream)
+          100: '#FFFFFF', // card surface (pure white)
+          200: '#E7E5E4', // borders (warm stone)
+          300: '#A8A29E', // muted text / helper
+          400: '#78716C', // secondary text
+          500: '#A16207', // primary accent (amber gold)
+          600: '#854D0E', // hover gold (darker)
+          700: '#44403C', // strong secondary text
+          800: '#1C1917', // body text
+          900: '#0C0A09', // headings (near-black)
         },
       },
     },

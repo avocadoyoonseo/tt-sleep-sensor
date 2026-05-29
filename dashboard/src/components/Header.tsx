@@ -41,7 +41,7 @@ export function Header({ fetchedAt, isLoading, isDemo, onRefresh, user, onLogout
     <header className="w-full px-4 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-lp-200">
       <div className="flex flex-col gap-1">
         <div className="flex items-center gap-2.5 flex-wrap">
-          <h1 className="font-mono text-xl font-bold tracking-tight text-lp-900">
+          <h1 className="font-display text-2xl font-semibold tracking-tight text-lp-900 italic">
             Dormi
           </h1>
           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-lp-500/30 bg-lp-500/10 text-lp-500 text-[11px] font-semibold tracking-wide shrink-0">
@@ -74,7 +74,7 @@ export function Header({ fetchedAt, isLoading, isDemo, onRefresh, user, onLogout
         <button
           onClick={onRefresh}
           disabled={isLoading}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-lp-100 hover:bg-lp-200 border border-lp-200 text-lp-700 transition-colors disabled:opacity-50"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-lp-100 hover:bg-lp-200 border border-lp-200 text-lp-700 transition-colors disabled:opacity-50 cursor-pointer"
           aria-label="Refresh now"
         >
           {/* Spinner or static icon */}
@@ -97,7 +97,7 @@ export function Header({ fetchedAt, isLoading, isDemo, onRefresh, user, onLogout
         {onLogout && (
           <button
             onClick={onLogout}
-            className="px-3 py-1.5 rounded-full bg-lp-100 hover:bg-rose-900/30 border border-lp-200 hover:border-rose-700/50 text-lp-400 hover:text-rose-400 text-xs transition-colors"
+            className="px-3 py-1.5 rounded-full bg-lp-100 hover:bg-rose-50 border border-lp-200 hover:border-rose-200 text-lp-400 hover:text-rose-600 text-xs transition-colors cursor-pointer"
           >
             Sign out
           </button>

@@ -108,11 +108,11 @@ export function TimeSeriesChart({ entries }: Props) {
               className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border transition-all ${
                 on ? 'opacity-100 border-lp-300' : 'opacity-40 border-lp-200'
               }`}
-              style={{ color: on ? CHART_COLORS[key] : '#475569' }}
+              style={{ color: on ? CHART_COLORS[key] : '#A8A29E' }}
             >
               <span
                 className="w-1.5 h-1.5 rounded-full inline-block"
-                style={{ background: on ? CHART_COLORS[key] : '#334155' }}
+                style={{ background: on ? CHART_COLORS[key] : '#D6D3D1' }}
               />
               {cfg.label}
             </button>
@@ -124,27 +124,27 @@ export function TimeSeriesChart({ entries }: Props) {
       <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 4, right: 8, bottom: 4, left: -10 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#E7E5E4" />
             <XAxis
               dataKey="t"
-              tick={{ fontSize: 10, fill: '#94A3B8' }}
+              tick={{ fontSize: 10, fill: '#A8A29E' }}
               tickLine={false}
               axisLine={false}
               interval="preserveStartEnd"
             />
             <YAxis
-              tick={{ fontSize: 10, fill: '#94A3B8' }}
+              tick={{ fontSize: 10, fill: '#A8A29E' }}
               tickLine={false}
               axisLine={false}
               width={36}
             />
             <RechartsTooltip
               contentStyle={{
-                background: '#1E293B',
-                border: '1px solid #334155',
+                background: '#FFFFFF',
+                border: '1px solid #E7E5E4',
                 borderRadius: '8px',
                 fontSize: '12px',
-                color: '#E2E8F0',
+                color: '#1C1917',
               }}
             />
             {/* Healthy-zone reference lines (dashed, subtle) */}
