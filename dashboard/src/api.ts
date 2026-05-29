@@ -1,10 +1,5 @@
 import type { ChannelData, FeedEntry } from "./types";
-import { THINGSPEAK_CHANNEL_ID, FEED_24H, API_BASE_URL } from "./config";
-import { generateMockData } from "./mockData";
-import { calculateSleepScore } from "./metrics";
-
-// If the channel ID is still the placeholder, serve generated demo data.
-export const IS_DEMO = THINGSPEAK_CHANNEL_ID === "0000000";
+import { FEED_24H, API_BASE_URL } from "./config";
 
 // ── Token storage ─────────────────────────────────────────────────────────────
 
@@ -65,43 +60,6 @@ export async function register(
   return { token: data.token!, user: data.user! };
 }
 
-// ── Data fetch (ThingSpeak raw format for backwards compat) ───────────────────
-
-interface RawFeed {
-  created_at: string;
-  entry_id: number;
-  field1: string | null;
-  field2: string | null;
-  field3: string | null;
-  field4: string | null;
-  field5: string | null;
-  field6: string | null;
-}
-
-interface ThingSpeakResponse {
-  feeds: RawFeed[];
-}
-
-function parseThingSpeakEntry(raw: RawFeed): FeedEntry | null {
-  const co2 = Number(raw.field1);
-  const tempF = Number(raw.field2);
-  const hum = Number(raw.field3);
-  const noise = Number(raw.field4);
-  const lux = Number(raw.field5);
-  if ([co2, tempF, hum, noise, lux].some(isNaN)) return null;
-
-  const score = calculateSleepScore(lux, tempF, co2, hum);
-  return {
-    timestamp: new Date(raw.created_at),
-    co2,
-    tempF,
-    humidity: hum,
-    noise,
-    lux,
-    score,
-  };
-}
-
 // ── Backend feed format ───────────────────────────────────────────────────────
 
 interface BackendFeed {
@@ -117,8 +75,6 @@ interface BackendFeed {
 }
 
 function parseBackendEntry(raw: BackendFeed): FeedEntry {
-  const score = calculateSleepScore(raw.lux, raw.temp_f, raw.co2, raw.humidity);
-
   return {
     timestamp: new Date(raw.timestamp),
     co2: raw.co2,
@@ -126,39 +82,24 @@ function parseBackendEntry(raw: BackendFeed): FeedEntry {
     humidity: raw.humidity,
     noise: raw.noise,
     lux: raw.lux,
-    score,
+    score: raw.score,
   };
 }
 
-// ── Main fetch — uses backend if token present, else ThingSpeak / demo ────────
+// ── Main fetch ────────────────────────────────────────────────────────────────
 
-export async function fetchChannelData(
-  token?: string | null,
-): Promise<ChannelData> {
-  if (token) {
-    const res = await fetch(`${API_BASE_URL}/data/feed?results=${FEED_24H}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (res.status === 401) {
-      clearToken();
-      throw new Error("Session expired — please log in again");
-    }
-    if (!res.ok) throw new Error(`Backend responded ${res.status}`);
-    const data = (await res.json()) as { feeds: BackendFeed[] };
-    const entries = data.feeds.map(parseBackendEntry);
-    return { entries, latest: entries.at(-1) ?? null, fetchedAt: new Date() };
+export async function fetchChannelData(token: string): Promise<ChannelData> {
+  const res = await fetch(`${API_BASE_URL}/data/feed?results=${FEED_24H}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (res.status === 401) {
+    clearToken();
+    throw new Error("Session expired — please log in again");
   }
-
-  if (IS_DEMO) return generateMockData();
-
-  const url = `https://api.thingspeak.com/channels/${THINGSPEAK_CHANNEL_ID}/feeds.json?results=${FEED_24H}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`ThingSpeak responded ${res.status}`);
-  const data: ThingSpeakResponse = await res.json();
-  const entries = data.feeds
-    .map(parseThingSpeakEntry)
-    .filter((e): e is FeedEntry => e !== null);
-  return { entries, latest: entries.at(-1) ?? null, fetchedAt: new Date() };
+  if (!res.ok) throw new Error(`Backend responded ${res.status}`);
+  const data = (await res.json()) as { feeds: BackendFeed[] };
+  const entries = data.feeds.map(parseBackendEntry);
+  return { entries, latest: entries[entries.length - 1] ?? null, fetchedAt: new Date() };
 }
 
 // ── AI Recommendations ────────────────────────────────────────────────────────

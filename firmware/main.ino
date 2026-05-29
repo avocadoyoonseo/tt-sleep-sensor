@@ -3,7 +3,6 @@
 #include <WiFi.h>
 #include <WiFiManager.h>
 #include <HTTPClient.h>
-#include <ThingSpeak.h>
 #include <SensirionI2cScd4x.h>
 #include <BH1750.h>
 #include <RTClib.h>
@@ -45,7 +44,6 @@ static const unsigned int PORTAL_TIMEOUT_S = 180;
 SensirionI2cScd4x sensor;
 BH1750 lightMeter;
 RTC_DS3231 rtc;
-WiFiClient wifiClient;
 WiFiManager wm;
 I2SClass i2s;
 Preferences prefs;
@@ -68,7 +66,6 @@ static float lastTempF = NAN;
 static float lastHumidity = NAN;
 static float lastLux = NAN;
 static float lastNoiseDb = NAN;
-static unsigned long lastUploadMs = 0;
 static unsigned long lastBackendUploadMs = 0;
 static unsigned long lastMicMs = 0;
 static unsigned long lastDisplayMs = 0;
@@ -426,46 +423,7 @@ static void readSensorsIfReady() {
                 co2, tempF, humidity, lux, lastNoiseDb, score);
 }
 
-// ---------- Cloud uploads ----------
-
-static void uploadToThingSpeakIfDue() {
-  unsigned long nowMs = millis();
-  if (nowMs - lastUploadMs < UPLOAD_INTERVAL_MS) {
-    return;
-  }
-  lastUploadMs = nowMs;
-
-  if (WiFi.status() != WL_CONNECTED) {
-    Serial.println(F("[ThingSpeak] skipped — WiFi not connected"));
-    return;
-  }
-  if (isnan(lastCO2_ppm)) {
-    Serial.println(F("[ThingSpeak] skipped — no sensor data yet"));
-    return;
-  }
-
-  ThingSpeak.setField(1, lastCO2_ppm);
-  ThingSpeak.setField(2, lastTempF);
-  ThingSpeak.setField(3, lastHumidity);
-  if (!isnan(lastNoiseDb)) {
-    ThingSpeak.setField(4, lastNoiseDb);
-  }
-  if (!isnan(lastLux)) {
-    ThingSpeak.setField(5, lastLux);
-  }
-  float score = computeSleepScore();
-  if (!isnan(score)) {
-    ThingSpeak.setField(6, score);
-  }
-
-  int httpCode = ThingSpeak.writeFields(THINGSPEAK_CHANNEL_ID, THINGSPEAK_WRITE_KEY);
-  if (httpCode == 200) {
-    Serial.println(F("[ThingSpeak] upload OK"));
-  } else {
-    Serial.print(F("[ThingSpeak] upload failed, HTTP "));
-    Serial.println(httpCode);
-  }
-}
+// ---------- Cloud upload ----------
 
 // Posts sensor data to the custom Express backend so the dashboard
 // can serve per-user history and the AI recommendation engine has data.
@@ -786,7 +744,6 @@ void setup() {
     WiFi.persistent(true);
   }
 
-  ThingSpeak.begin(wifiClient);
 }
 
 void loop() {
@@ -805,7 +762,6 @@ void loop() {
   checkAlarmTrigger();
   updateBuzzer();
   updateDisplayIfDue();
-  uploadToThingSpeakIfDue();
   uploadToBackendIfDue();
   delay(50);
 }

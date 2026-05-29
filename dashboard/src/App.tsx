@@ -76,7 +76,7 @@ export function App() {
     setIsLoading(true)
     setError(null)
     try {
-      const result = await fetchChannelData(token)
+      const result = await fetchChannelData(token!)
       setData(result)
     } catch (e) {
       setError(

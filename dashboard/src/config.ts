@@ -1,7 +1,3 @@
-// Set your ThingSpeak channel ID here, or via VITE_THINGSPEAK_CHANNEL_ID env var.
-export const THINGSPEAK_CHANNEL_ID: string =
-  import.meta.env.VITE_THINGSPEAK_CHANNEL_ID ?? '0000000';
-
 // Backend API base URL (the Express server).
 export const API_BASE_URL: string =
   import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3001';
