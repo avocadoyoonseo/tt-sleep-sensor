@@ -73,10 +73,11 @@ export function App() {
   }
 
   const refresh = useCallback(async () => {
+    if (!token) return
     setIsLoading(true)
     setError(null)
     try {
-      const result = await fetchChannelData(token!)
+      const result = await fetchChannelData(token)
       setData(result)
     } catch (e) {
       setError(

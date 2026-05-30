@@ -39,23 +39,21 @@ export function Header({ fetchedAt, isLoading, isDemo, onRefresh, user, onLogout
 
   return (
     <header className="w-full px-4 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-lp-200">
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-2.5 flex-wrap">
-          <h1 className="font-display text-2xl font-semibold tracking-tight text-lp-900 italic">
-            Dormi
-          </h1>
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-lp-500/30 bg-lp-500/10 text-lp-500 text-[11px] font-semibold tracking-wide shrink-0">
-            <span className="font-mono">&#920;&#932;</span>
-            <span className="text-lp-400">·</span>
-            <span>Upsilon Delta</span>
+      <div className="flex items-end gap-2">
+        <svg className="w-6 h-6 text-lp-500 shrink-0 mb-0.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <h1 className="font-display text-3xl font-semibold italic text-lp-900 leading-none">
+          Dormi
+        </h1>
+        <span className="font-didot text-lp-500 text-xs tracking-widest leading-none mb-0.5">
+          &#920;&#932;&ensp;Upsilon Delta
+        </span>
+        {isDemo && (
+          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30 uppercase tracking-wider mb-0.5">
+            Demo Data
           </span>
-          {isDemo && (
-            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30 uppercase tracking-wider">
-              Demo Data
-            </span>
-          )}
-        </div>
-        <p className="text-sm text-lp-400">Live Bedside Monitor</p>
+        )}
       </div>
 
       <div className="flex items-center gap-3 text-sm text-lp-400">

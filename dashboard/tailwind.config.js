@@ -7,6 +7,7 @@ export default {
         sans: ['Montserrat', 'system-ui', 'sans-serif'],
         mono: ['DM Mono', 'monospace'],
         display: ['Cormorant', 'serif'],
+        didot: ['GFS Didot', 'serif'],
       },
       colors: {
         // Luxury Minimal — warm cream bg, white cards, gold accent.

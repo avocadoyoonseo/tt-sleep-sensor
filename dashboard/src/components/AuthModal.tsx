@@ -39,19 +39,18 @@ export function AuthModal({ onSuccess }: Props) {
       <div className="w-full max-w-sm">
         {/* Brand */}
         <div className="text-center mb-8">
-          <h1 className="font-display text-5xl font-semibold italic text-lp-900 tracking-tight mb-2">
-            Dormi
-          </h1>
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <div className="h-px flex-1 max-w-[60px] bg-lp-200" />
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 text-lp-500 text-[11px] font-semibold tracking-widest uppercase">
-              <span>&#920;&#932;</span>
-              <span className="text-lp-300">·</span>
-              <span>Upsilon Delta</span>
-            </span>
-            <div className="h-px flex-1 max-w-[60px] bg-lp-200" />
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <svg className="w-16 h-16 text-lp-500 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <h1 className="font-display text-8xl font-semibold italic text-lp-900 leading-none">
+              Dormi
+            </h1>
           </div>
-          <p className="text-xs text-lp-300 tracking-widest uppercase">Live Bedside Monitor</p>
+          <p className="font-didot text-lp-500 text-lg tracking-widest leading-none mb-4">
+            &#920;&#932;&ensp;Upsilon Delta
+          </p>
+          <p className="text-xs text-lp-300 tracking-[0.2em] uppercase">Live Bedside Monitor</p>
         </div>
 
         <div className="bg-lp-100 rounded-2xl border border-lp-200 p-6 shadow-sm">

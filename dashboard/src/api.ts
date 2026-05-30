@@ -23,15 +23,23 @@ export interface AuthUser {
   name: string;
 }
 
+function wrapNetworkError<T>(p: Promise<T>): Promise<T> {
+  return p.catch((err: unknown) => {
+    if (err instanceof TypeError && String(err.message).includes('fetch'))
+      throw new Error('Cannot reach server — make sure the backend is running on port 3001')
+    throw err
+  })
+}
+
 export async function login(
   email: string,
   password: string,
 ): Promise<{ token: string; user: AuthUser }> {
-  const res = await fetch(`${API_BASE_URL}/auth/login`, {
+  const res = await wrapNetworkError(fetch(`${API_BASE_URL}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
-  });
+  }));
   const data = (await res.json()) as {
     token?: string;
     user?: AuthUser;
@@ -46,11 +54,11 @@ export async function register(
   name: string,
   password: string,
 ): Promise<{ token: string; user: AuthUser }> {
-  const res = await fetch(`${API_BASE_URL}/auth/register`, {
+  const res = await wrapNetworkError(fetch(`${API_BASE_URL}/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, name, password }),
-  });
+  }));
   const data = (await res.json()) as {
     token?: string;
     user?: AuthUser;
